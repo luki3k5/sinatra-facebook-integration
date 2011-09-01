@@ -1,7 +1,9 @@
 require 'sinatra'
 require 'oauth2'
 require 'json'
-require 'lib/facebook'
+
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
+require 'facebook'
 
 set :views, File.dirname(__FILE__) + '/views'
 
