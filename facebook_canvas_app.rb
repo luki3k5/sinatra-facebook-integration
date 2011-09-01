@@ -26,6 +26,8 @@ helpers do
   
     data = FBGraph::Canvas.parse_signed_request(app_secret, request) unless request.nil?
     @access_token = data["oauth_token"]  unless data.nil?
+    
+    puts "DEBUG HERE: #{data.inspect}"
   end
 end
 
