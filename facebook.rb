@@ -5,5 +5,5 @@ post '/' do
 end
 
 get '/' do
-  "Hello World! from GET"
+  erb :index
 end
