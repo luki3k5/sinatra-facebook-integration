@@ -42,7 +42,7 @@ end
 # Second step is to perform oauth authentycation and obtain data
 post '/login' do
   oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
-  unless params[:code].blank?
+  unless params[:code].nil?
     access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}login")
     @facebook_user = JSON.parse(access_token.get('/me'))
   end
