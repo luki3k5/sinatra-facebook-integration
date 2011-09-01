@@ -1,5 +1,5 @@
 require 'sinatra'
-require 'oauth'
+require 'oauth2'
 require 'json'
 require 'lib/facebook'
 
