@@ -2,7 +2,7 @@ require 'oauth'
 require 'json'
 require 'canvas'
 
-module facebook
+module FacebookHelpers
 
   # filter for authorization   
   def get_current_user(app_secret)

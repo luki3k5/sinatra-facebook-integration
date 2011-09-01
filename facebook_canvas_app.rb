@@ -3,7 +3,7 @@ require 'oauth2'
 require 'json'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
-require 'facebook'
+require 'facebook_helpers'
 
 set :views, File.dirname(__FILE__) + '/views'
 
