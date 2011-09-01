@@ -1,2 +1,2 @@
-require './facebook'
+require './facebook_canvas_app'
 run Sinatra::Application
