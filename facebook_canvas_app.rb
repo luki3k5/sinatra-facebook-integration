@@ -32,9 +32,11 @@ end
 # First step is to display page with redirect
 post '/' do
   if get_current_user(settings.app_secret)
+    puts "scenario1"
     @the_url = "#{settings.app_url}login"
   else
-    @the_url = "#{settings.oauth_url}?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}&scope=email" # HERE IS WHAT WE REQUEST (EMAIL ONLY)
+    puts "scenario2"    
+    @the_url = "#{settings.oauth_url}?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}/login&scope=email" # HERE IS WHAT WE REQUEST (EMAIL ONLY)
   end
   erb :index
 end
