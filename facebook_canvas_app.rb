@@ -5,9 +5,9 @@ require 'json'
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'facebook_helpers'
 
-set :views, File.dirname(__FILE__) + '/views'
-
 configure do
+  set :views, File.dirname(__FILE__) + '/views'
+  
   # reading in the config with the details about fb application
   yml = YAML::load(File.open(File.dirname(__FILE__) + "/facebook_app_config.yml"))
   
