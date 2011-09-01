@@ -3,7 +3,7 @@ require 'oauth2'
 require 'json'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
-require 'facebook_helpers'
+require 'canvas'
 
 configure do
   set :views, File.dirname(__FILE__) + '/views'
@@ -17,6 +17,16 @@ configure do
 
   set :app_url,   "https://apps.facebook.com/#{settings.app_name}/"
   set :oauth_url, "https://www.facebook.com/dialog/oauth/"
+end
+
+helpers do
+  def get_current_user(app_secret)
+    request = JSON.parse(params[:user_session])["signed_request"] unless params[:user_session].nil? || params[:user_session]["signed_request"].nil?
+    request = params["signed_request"] unless !request.nil? # this is when FB pings us for deauthorize
+  
+    data = FBGraph::Canvas.parse_signed_request(app_secret, request) unless request.nil?
+    @access_token = data["oauth_token"]  unless data.nil?
+  end
 end
 
 # First step is to display page with redirect
