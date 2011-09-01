@@ -4,14 +4,24 @@ GEM
     addressable (2.2.6)
     daemons (1.1.4)
     eventmachine (0.12.10)
+    faraday (0.6.1)
+      addressable (~> 2.2.4)
+      multipart-post (~> 1.1.0)
+      rack (< 2, >= 1.1.0)
     heroku (2.6.1)
       launchy (>= 0.3.2)
       rest-client (~> 1.6.1)
       rubyzip
       term-ansicolor (~> 1.0.5)
+    json (1.5.3)
     launchy (2.0.5)
       addressable (~> 2.2.6)
     mime-types (1.16)
+    multi_json (1.0.3)
+    multipart-post (1.1.2)
+    oauth2 (0.4.1)
+      faraday (~> 0.6.1)
+      multi_json (>= 0.0.5)
     rack (1.3.2)
     rest-client (1.6.7)
       mime-types (>= 1.16)
@@ -31,5 +41,7 @@ PLATFORMS
 
 DEPENDENCIES
   heroku
+  json
+  oauth2
   sinatra
   thin
