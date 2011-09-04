@@ -26,19 +26,16 @@ helpers do
   
     data = FBGraph::Canvas.parse_signed_request(app_secret, request) unless request.nil?
     @access_token = data["oauth_token"]  unless data.nil?
-    
-    puts "DEBUG HERE: #{data.inspect}"
+    # ... TODO here - check in DB if we have the user stored 
   end
 end
 
 # First step is to display page with redirect
 post '/' do
   if get_current_user(settings.app_secret)
-    puts "scenario1"
     @the_url = "#{settings.app_url}login"
   else
-    puts "scenario2"    
-    @the_url = "#{settings.oauth_url}?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}/login&scope=email" # HERE IS WHAT WE REQUEST (EMAIL ONLY)
+    @the_url = "#{settings.oauth_url}?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}login&scope=email" # HERE IS WHAT WE REQUEST (EMAIL ONLY)
   end
   erb :index
 end
@@ -52,4 +49,3 @@ post '/login' do
   end
   erb :details
 end
-
