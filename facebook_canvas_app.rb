@@ -15,9 +15,8 @@ configure do
   set :app_name,   yml["app_name"]
   set :app_secret, yml["app_secret"]
 
-  set :app_url,    "https://apps.facebook.com/#{settings.app_name}/"
-  set :oauth_url,  "https://www.facebook.com/dialog/oauth/"
-  set :oauth_client OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
+  set :app_url,   "https://apps.facebook.com/#{settings.app_name}/"
+  set :oauth_url, "https://www.facebook.com/dialog/oauth/"
 end
 
 # helpers do
@@ -40,7 +39,9 @@ post '/' do
     erb :index
   else
     puts "I AM HERE2 : and settings are: #{settings.app_id} #{settings.app_secret} #{settings.app_url} GOING FWD"
-    access_token = settings.oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}")
+    oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
+    puts "I AM HERE3: #{oauth_client.inspect}"
+    access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}")
     @facebook_user = JSON.parse(access_token.get('/me'))
     erb :details
   end  
