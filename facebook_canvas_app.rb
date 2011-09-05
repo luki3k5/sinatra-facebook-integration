@@ -1,7 +1,8 @@
 require 'sinatra'
+require 'net/https'
+require 'uri'
 require 'oauth2'
 require 'json'
-require "net/https"
 
 $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
 require 'canvas'
