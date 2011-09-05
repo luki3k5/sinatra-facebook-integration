@@ -44,8 +44,13 @@ post '/' do
     puts "I AM HERE4: #{oauth_client.web_server.inspect}"    
     puts "I AM HERE5: #{params[:code]}"
     puts "I AM HERE6: #{settings.app_url}"
-        
-    access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}")
+    
+    begin    
+      access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}")
+    
+    rescue Exception => ex
+      puts "The Damn Exceptions is: #{ex.inspect}"
+    end
     @facebook_user = JSON.parse(access_token.get('/me'))
     erb :details
   end  
