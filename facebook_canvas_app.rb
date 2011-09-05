@@ -29,4 +29,3 @@ post '/' do
     erb :details
   end    
 end
-
