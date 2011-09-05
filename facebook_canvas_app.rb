@@ -19,33 +19,44 @@ configure do
   set :oauth_url, "https://www.facebook.com/dialog/oauth/"
 end
 
-helpers do
-  def get_current_user(app_secret)
-    request = JSON.parse(params[:user_session])["signed_request"] unless params[:user_session].nil? || params[:user_session]["signed_request"].nil?
-    request = params["signed_request"] unless !request.nil? # this is when FB pings us for deauthorize
-  
-    data = FBGraph::Canvas.parse_signed_request(app_secret, request) unless request.nil?
-    @access_token = data["oauth_token"]  unless data.nil?
-    # ... TODO here - check in DB if we have the user stored 
-  end
-end
+# helpers do
+#   def get_current_user(app_secret)
+#     request = JSON.parse(params[:user_session])["signed_request"] unless params[:user_session].nil? || params[:user_session]["signed_request"].nil?
+#     request = params["signed_request"] unless !request.nil? # this is when FB pings us for deauthorize
+#   
+#     data = FBGraph::Canvas.parse_signed_request(app_secret, request) unless request.nil?
+#     @access_token = data["oauth_token"]  unless data.nil?
+#     # ... TODO here - check in DB if we have the user stored 
+#   end
+# end
 
-# First step is to display page with redirect
 post '/' do
-  if get_current_user(settings.app_secret)
-    @the_url = "#{settings.app_url}login"
+  
+  # if we do not have the code then we render app dialog
+  if params[:code].nil?
+    @the_url = "http://www.facebook.com/dialog/oauth?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}"
+    erb :index
   else
-    @the_url = "#{settings.oauth_url}?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}login&scope=email" # HERE IS WHAT WE REQUEST (EMAIL ONLY)
-  end
-  erb :index
+    oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
+    access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}login")
+    @facebook_user = JSON.parse(access_token.get('/me'))
+    erb :details
+  end  
+  
+  # if get_current_user(settings.app_secret)
+  #   @the_url = "#{settings.app_url}login"
+  # else
+  #   @the_url = "#{settings.oauth_url}?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}login&scope=email" # HERE IS WHAT WE REQUEST (EMAIL ONLY)
+  # end
+  # erb :index
 end
 
 # Second step is to perform oauth authentycation and obtain data
-post '/login' do
-  oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
-  unless params[:code].nil?
-    access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}login")
-    @facebook_user = JSON.parse(access_token.get('/me'))
-  end
-  erb :details
-end
+# post '/login' do
+#   oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
+#   unless params[:code].nil?
+#     access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}login")
+#     @facebook_user = JSON.parse(access_token.get('/me'))
+#   end
+#   erb :details
+# end
