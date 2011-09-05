@@ -42,7 +42,9 @@ post '/' do
     oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
     puts "I AM HERE3: #{oauth_client.inspect}"
     puts "I AM HERE4: #{oauth_client.web_server.inspect}"    
-    
+    puts "I AM HERE5: #{params[:code]}"
+    puts "I AM HERE6: #{settings.app_url}"
+        
     access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}")
     @facebook_user = JSON.parse(access_token.get('/me'))
     erb :details
