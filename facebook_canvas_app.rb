@@ -34,10 +34,11 @@ post '/' do
   
   # if we do not have the code then we render app dialog
   if params[:code].nil?
+    puts "I AM HERE1 : and settings are: #{settings.inspect} GOING FWD"    
     @the_url = "http://www.facebook.com/dialog/oauth?client_id=#{settings.app_id}&redirect_uri=#{settings.app_url}"
     erb :index
   else
-    puts "I AM HERE: and settings are: #{settings.inspect} GOING FWD"
+    puts "I AM HERE2 : and settings are: #{settings.inspect} GOING FWD"
     oauth_client = OAuth2::Client.new(settings.app_id, settings.app_secret, :site => 'https://graph.facebook.com')
     access_token = oauth_client.web_server.get_access_token(params[:code], :redirect_uri => "#{settings.app_url}")
     @facebook_user = JSON.parse(access_token.get('/me'))
